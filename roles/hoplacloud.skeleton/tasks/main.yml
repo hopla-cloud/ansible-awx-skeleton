@@ -1,0 +1,182 @@
+---
+# tasks file for hoplacloud.skeleton
+- name: Create network 1
+  os_network:
+    name: "Lan1"
+    port_security_enabled: yes
+  when: (lan1|bool == true)
+
+- name: Create network 2
+  os_network:
+    name: "Lan2"
+    port_security_enabled: yes
+  when: (lan2|bool == true)
+
+- name: Create subnet 1
+  os_subnet:
+    network_name: "Lan1"
+    name: "Lan-1"
+    cidr: 10.15.30.0/24
+    dns_nameservers:
+       - 208.67.222.222
+       - 208.67.220.220
+    gateway_ip: "10.15.30.254"
+  when: (lan1|bool == true)
+
+- name: Create subnet 2
+  os_subnet:
+    network_name: "Lan2"
+    name: "Lan-2"
+    cidr: 10.15.31.0/24
+    dns_nameservers:
+       - 208.67.222.222
+       - 208.67.220.220
+    gateway_ip: "10.15.31.254"
+  when: (lan2|bool == true)
+
+- name: Create security group "WL-infogerance-hopla"
+  os_security_group:
+    name: "WL-infogerance-hopla"
+    description: Whitelist des IP utilisees par hopla dans le cadre de votre contrat d'infogerance.
+
+- name: Create security group "WL-Lan-1"
+  os_security_group:
+    name: "WL-Lan-1"
+    description: Lan-1
+  when: (lan1|bool == true)
+
+- name: Create security group "WL-Lan-2"
+  os_security_group:
+    name: "WL-Lan-2"
+    description: Lan-1 acces
+  when: (lan2|bool == true)
+
+- name: Create security group "WL-{{ username }}"
+  os_security_group:
+    name: "WL-{{ username }}"
+    description: Whitelist de vos IP
+  when: (ip_user_v4 is defined) and (ip_user_v4 |length > 4)
+
+- name: Create security group rule in "WL-{{ username }}" IPv4
+  os_security_group_rule:
+    security_group: "WL-{{ username }}"
+    remote_ip_prefix: "{{ item }}"
+  with_items: "{{ ip_user_v4 }}"
+  when: (ip_user_v4 is defined) and (ip_user_v4 |length > 4)
+  ignore_errors: true
+
+- name: Create security group rule in "WL-{{ username }}" IPv6
+  os_security_group_rule:
+    security_group: "WL-{{ username }}"
+    remote_ip_prefix: "{{ item }}"
+    ethertype: "IPv6"
+  with_items: "{{ ip_user_v6 }}"
+  when: (ip_user_v6 is defined) and (ip_user_v6 |length > 4)
+  ignore_errors: true
+
+- name: Create security group rule in "WL-Lan-1"
+  os_security_group_rule:
+    security_group: "WL-Lan-1"
+    remote_ip_prefix: 10.15.30.0/24
+  when: (lan1|bool == true)
+  ignore_errors: true
+
+- name: Create security group rule in "WL-Lan-2"
+  os_security_group_rule:
+    security_group: "WL-Lan-2"
+    remote_ip_prefix: 10.15.31.0/24
+  when: (lan2|bool == true)
+  ignore_errors: true
+
+- name: Create security group rule in "WL-infogerance-hopla" IPv4
+  os_security_group_rule:
+    security_group: "WL-infogerance-hopla"
+    remote_ip_prefix: "{{ item }}"
+  with_items: "{{ ip_hopla_v4 }}"
+  ignore_errors: true
+
+- name: Create security group rule in "WL-infogerance-hopla" IPv6
+  os_security_group_rule:
+    security_group: "WL-infogerance-hopla"
+    remote_ip_prefix: "{{ item }}"
+    ethertype: "IPv6"
+  with_items: "{{ ip_hopla_v6 }}"
+  ignore_errors: true
+
+- name: Import public key
+  os_keypair:
+    name: "{{ username }}-infogerance"
+    public_key: "{{ public_key }}"
+  when: (public_key is defined) and (public_key |length > 4)
+
+- name: Create a port (router lan1 interface)
+  os_port:
+       name: "gw-lan-1"
+       network: "Lan1"
+       security_groups: "WL-Lan-1"
+       fixed_ips:
+         - ip_address: 10.15.30.254
+  when: (lan1|bool == true) and (router == "routeros")
+
+- name: Create a port (router lan2 interface)
+  os_port:
+       name: "gw-lan-2"
+       network: "Lan2"
+       security_groups: "WL-Lan-2"
+       fixed_ips:
+         - ip_address: 10.15.31.254
+  when: (lan2|bool == true) and (router == "routeros")
+
+- name: Create RouterOS instance Lan1 only
+  os_server:
+       name: "{{ username }}R1"
+       image: a22ff3d8-1cb6-4c8e-b205-280c2c957dd3
+       timeout: 200
+       flavor: std.1
+       nics:
+         - net-name : "fr-east-1-public"
+         - port-name: "gw-lan-1"
+       auto_ip: no
+       boot_from_volume: yes
+       terminate_volume: no
+       security_groups:
+         - "WL-infogerance-hopla"
+         - "WL-{{ username }}"
+       meta: "router=routeros"
+  when: (lan1|bool == true) and (router == "routeros") and (lan2|bool == false)
+
+- name: Create RouterOS instance Lan1 and Lan2
+  os_server:
+       name: "{{ username }}R1"
+       image: a22ff3d8-1cb6-4c8e-b205-280c2c957dd3
+       timeout: 200
+       flavor: std.1
+       nics:
+         - net-name : "fr-east-1-public"
+         - port-name: "gw-lan-1"
+         - port-name: "gw-lan-2"
+       auto_ip: no
+       boot_from_volume: yes
+       terminate_volume: no
+       security_groups:
+         - "WL-infogerance-hopla"
+         - "WL-{{ username }}"
+       meta: "router=routeros"
+  when: (lan1|bool == true) and (router == "routeros") and (lan2|bool == true)
+
+- name: Create VR for Lan1 only
+  os_router:
+    name: "VR1"
+    network: "fr-east-1-public"
+    interfaces:
+      - "Lan-1"
+  when: (lan1|bool == true) and (router == "vr") and (lan2|bool == false)
+
+- name: Create VR for Lan1 and Lan2
+  os_router:
+    name: "VR1"
+    network: "fr-east-1-public"
+    interfaces:
+      - "Lan-1"
+      - "Lan-2"
+  when: (lan1|bool == true) and (router == "vr") and (lan2|bool == true)

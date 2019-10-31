@@ -1,0 +1,105 @@
+---
+# tasks file for hoplacloud.mikrotik
+ - set_fact:
+      source_script: ":delay 15\\r\\ \\n/ip address add address={{mikrotik_ipv4}}/24 interface=ether1\\r\\ \\n/ip route add distance=1 gateway={{gw_ipv4}}\\r\\ \\n/ipv6 address add address={{mikrotik_ipv6}}/64 interface=ether1\\r\\ \\n/ipv6 route add distance=1 gateway={{gw_ipv6}}\\r\\ \\n/system scheduler disable Config-ip"
+
+ - name:
+   routeros_command:
+     commands: '/system script add dont-require-permissions=yes name=conf-ip owner=admin source="{{source_script}}"'
+
+ - name:
+   routeros_command:
+     commands: /system schedule add name=Config-ip on-event="/system script run conf-ip" start-time=startup interval=0
+
+ - name: Disable dhcp package
+   routeros_command:
+     commands: /system package disable dhcp
+
+ - name: Disable wireless package
+   routeros_command:
+     commands: /system package disable wireless
+
+ - name: Disable hotspot package
+   routeros_command:
+     commands: /system package disable hotspot
+
+ - name: Disable mpls package
+   routeros_command:
+     commands: /system package disable mpls
+
+ - name: Disable ups package
+   routeros_command:
+     commands: /system package disable ups
+
+ - name: Enable IPv6
+   routeros_command:
+     commands: /system package enable ipv6
+
+ - name: Disable services
+   routeros_command:
+     commands: /ip service disable telnet
+
+ - name: Disable services
+   routeros_command:
+     commands: /ip service disable ftp
+
+ - name: Disable services
+   routeros_command:
+     commands: /ip service disable www
+
+ - name: Disable services
+   routeros_command:
+     commands: /ip service disable api
+
+ - name: Disable services
+   routeros_command:
+     commands: /ip service disable api-ssl
+
+ - name: Disable services
+   routeros_command:
+     commands: /ip service disable www-ssl
+
+ - name: Configure lan1 interface
+   routeros_command:
+     commands: /ip address add address=10.15.30.254/24 interface=ether2
+
+ - name: Configure lan2 interface
+   routeros_command:
+     commands: /ip address add address=10.15.31.254/24 interface=ether3
+   when: (lan2|bool == true)
+
+ - name: Configure NAT
+   routeros_command:
+     commands: /ip firewall nat add action=masquerade chain=srcnat out-interface=ether1
+
+ - name: Configure DNS
+   routeros_command:
+     commands: /ip dns set server=208.67.222.222
+
+ - name: Set Log to disk
+   routeros_command:
+     commands: /system logging add action=disk topics=critical
+
+ - name: Set Log to disk
+   routeros_command:
+     commands: /system logging add action=disk topics=error
+
+ - name: Set Log to disk
+   routeros_command:
+     commands: /system logging add action=disk topics=info
+
+ - name: Set Log to disk
+   routeros_command:
+     commands: /system logging add action=disk topics=warning
+
+ - name: Set Lograte
+   routeros_command:
+     commands: /system logging action set 1 disk-file-count=20
+
+ - name: Set admin password
+   routeros_command:
+     commands: /user set 0 password="{{mikrotik_password}}"
+
+ - name: Install udpate
+   routeros_command:
+     commands: /system package update install
