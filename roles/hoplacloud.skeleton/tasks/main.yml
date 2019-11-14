@@ -175,7 +175,6 @@
   os_port:
        name: "gw-lan-1"
        network: "Lan1"
-       security_groups: "WL-Lan-1"
        port_security_enabled: "no"
        fixed_ips:
          - ip_address: 10.15.30.254
@@ -185,7 +184,6 @@
   os_port:
        name: "gw-lan-2"
        network: "Lan2"
-       security_groups: "WL-Lan-2"
        port_security_enabled: "no"
        fixed_ips:
          - ip_address: 10.15.31.254
