@@ -197,8 +197,7 @@
          - net-name : "fr-east-1-public"
          - port-name: "gw-lan-1"
        auto_ip: no
-       boot_from_volume: yes
-       terminate_volume: no
+       boot_from_volume: no
        security_groups:
          - "WL-infogerance-hopla"
          - "WL-{{ username }}"
@@ -217,8 +216,7 @@
          - port-name: "gw-lan-1"
          - port-name: "gw-lan-2"
        auto_ip: no
-       boot_from_volume: yes
-       terminate_volume: no
+       boot_from_volume: no
        security_groups:
          - "WL-infogerance-hopla"
          - "WL-{{ username }}"
