@@ -66,7 +66,6 @@
   os_security_group_rule:
     security_group: "WL-{{ username }}"
     state: absent
-    remote_ip_prefix: 0.0.0.0/0
     direction: egress
   when: (ip_user_v4 is defined) and (ip_user_v4 |length > 4)
   ignore_errors: true
@@ -75,10 +74,9 @@
   os_security_group_rule:
     security_group: "WL-{{ username }}"
     state: absent
-    remote_ip_prefix: "::/0"
     direction: egress
     ethertype: "IPv6"
-  when: (ip_user_v6 is defined) and (ip_user_v6 |length > 4)
+  when: (ip_user_v4 is defined) and (ip_user_v4 |length > 4)
   ignore_errors: true
 
 - name: Create security group rule in "WL-{{ username }}" IPv4
@@ -102,7 +100,6 @@
   os_security_group_rule:
     security_group: "WL-Lan-1"
     state: absent
-    remote_ip_prefix: 0.0.0.0/0
     direction: egress
   when: (lan1|bool == true)
   ignore_errors: true
@@ -111,7 +108,6 @@
   os_security_group_rule:
     security_group: "WL-Lan-1"
     state: absent
-    remote_ip_prefix: "::/0"
     direction: egress
     ethertype: "IPv6"
   when: (lan1|bool == true)
@@ -128,7 +124,6 @@
   os_security_group_rule:
     security_group: "WL-Lan-2"
     state: absent
-    remote_ip_prefix: 0.0.0.0/0
     direction: egress
   when: (lan2|bool == true)
   ignore_errors: true
@@ -137,7 +132,6 @@
   os_security_group_rule:
     security_group: "WL-Lan-2"
     state: absent
-    remote_ip_prefix: "::/0"
     direction: egress
     ethertype: "IPv6"
   when: (lan2|bool == true)
