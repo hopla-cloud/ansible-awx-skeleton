@@ -21,6 +21,8 @@
        - 208.67.222.222
        - 208.67.220.220
     gateway_ip: "10.15.30.254"
+    allocation_pool_start: "10.15.30.20"
+    allocation_pool_end: "10.15.30.200"
   when: (lan1|bool == true)
 
 - name: Create subnet 2
@@ -32,6 +34,8 @@
        - 208.67.222.222
        - 208.67.220.220
     gateway_ip: "10.15.31.254"
+    allocation_pool_start: "10.15.31.20"
+    allocation_pool_end: "10.15.31.200"
   when: (lan2|bool == true)
 
 - name: Create security group "WL-infogerance-hopla"
