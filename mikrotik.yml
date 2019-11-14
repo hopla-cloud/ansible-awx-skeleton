@@ -4,7 +4,7 @@
   tasks:
      - os_server_facts:
          filters:
-           name: "{{ username }}R1"
+           name: "{{ username }}-chr1"
      - set_fact:
           mikrotik_ipv4: "{{ openstack_servers | json_query('[].public_v4') | join('\n') }}"
           mikrotik_ipv6: "{{ openstack_servers | json_query('[].public_v6') | join('\n') }}"
@@ -33,7 +33,7 @@
           gw_ipv6: "{{ openstack_subnets | json_query('[].gateway_ip') | join('\n') }}"
           cidr_ipv6: "{{ openstack_subnets | json_query('[].cidr') | join('\n') }}"
 
-- hosts: "{{ username }}R1"
+- hosts: "{{ username }}-chr1"
   gather_facts: no
   vars:
     ansible_connection: network_cli

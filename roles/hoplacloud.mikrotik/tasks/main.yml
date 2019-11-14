@@ -35,29 +35,69 @@
    routeros_command:
      commands: /system package enable ipv6
 
- - name: Disable services
+ - name: Disable services [1/6]
    routeros_command:
      commands: /ip service disable telnet
 
- - name: Disable services
+ - name: Disable services [2/6]
    routeros_command:
      commands: /ip service disable ftp
 
- - name: Disable services
+ - name: Disable services [3/6]
    routeros_command:
      commands: /ip service disable www
 
- - name: Disable services
+ - name: Disable services [4/6]
    routeros_command:
      commands: /ip service disable api
 
- - name: Disable services
+ - name: Disable services [5/6]
    routeros_command:
      commands: /ip service disable api-ssl
 
- - name: Disable services
+ - name: Disable services [6/6]
    routeros_command:
      commands: /ip service disable www-ssl
+
+ - name: Disable services port [1/7]
+   routeros_command:
+     commands: /ip firewall service-port set sctp disabled=yes
+
+ - name: Disable services port [2/7]
+   routeros_command:
+     commands: /ip firewall service-port set irc disabled=yes
+
+ - name: Disable services port [3/7]
+   routeros_command:
+     commands: /ip firewall service-port set h323 disabled=yes
+
+ - name: Disable services port [4/7]
+   routeros_command:
+     commands: /ip firewall service-port set sip disabled=yes
+
+ - name: Disable services port [5/7]
+   routeros_command:
+     commands: /ip firewall service-port set pptp disabled=yes
+
+ - name: Disable services port [6/7]
+   routeros_command:
+     commands: /ip firewall service-port set udplite disabled=yes
+
+ - name: Disable services port [7/7]
+   routeros_command:
+     commands: /ip firewall service-port set dccp disabled=yes
+
+ - name: Create input rule
+   routeros_command:
+     commands: /ip firewall filter add action=accept chain=input
+
+ - name: Create forward rule
+   routeros_command:
+     commands: /ip firewall filter add action=accept chain=forward
+
+ - name: Create output rule
+   routeros_command:
+     commands: /ip firewall filter add action=accept chain=output
 
  - name: Configure lan1 interface
    routeros_command:
@@ -75,6 +115,10 @@
  - name: Configure DNS
    routeros_command:
      commands: /ip dns set server=208.67.222.222
+
+ - name: Configure hostname
+   routeros_command:
+     commands: /system identity set name={{ username }}-chr1
 
  - name: Set Log to disk
    routeros_command:

@@ -39,16 +39,21 @@
     name: "WL-infogerance-hopla"
     description: Whitelist des IP utilisees par hopla dans le cadre de votre contrat d'infogerance.
 
+- name: Create security group "ALLOW-OUT"
+  os_security_group:
+    name: "ALLOW-OUT"
+    description: Allow output trafic.
+
 - name: Create security group "WL-Lan-1"
   os_security_group:
     name: "WL-Lan-1"
-    description: Lan-1
+    description: Allow trafic for Lan-1.
   when: (lan1|bool == true)
 
 - name: Create security group "WL-Lan-2"
   os_security_group:
     name: "WL-Lan-2"
-    description: Lan-1 acces
+    description: Allow trafic for Lan-2.
   when: (lan2|bool == true)
 
 - name: Create security group "WL-{{ username }}"
@@ -56,6 +61,25 @@
     name: "WL-{{ username }}"
     description: Whitelist de vos IP
   when: (ip_user_v4 is defined) and (ip_user_v4 |length > 4)
+
+- name: Remove default rule in "WL-{{ username }}"
+  os_security_group_rule:
+    security_group: "WL-{{ username }}"
+    state: absent
+    remote_ip_prefix: 0.0.0.0/0
+    direction: egress
+  when: (ip_user_v4 is defined) and (ip_user_v4 |length > 4)
+  ignore_errors: true
+
+- name: Remove default rule in "WL-{{ username }}"
+  os_security_group_rule:
+    security_group: "WL-{{ username }}"
+    state: absent
+    remote_ip_prefix: "::/0"
+    direction: egress
+    ethertype: "IPv6"
+  when: (ip_user_v6 is defined) and (ip_user_v6 |length > 4)
+  ignore_errors: true
 
 - name: Create security group rule in "WL-{{ username }}" IPv4
   os_security_group_rule:
@@ -74,11 +98,49 @@
   when: (ip_user_v6 is defined) and (ip_user_v6 |length > 4)
   ignore_errors: true
 
+- name: Remove default rule in "WL-Lan-1"
+  os_security_group_rule:
+    security_group: "WL-Lan-1"
+    state: absent
+    remote_ip_prefix: 0.0.0.0/0
+    direction: egress
+  when: (lan1|bool == true)
+  ignore_errors: true
+
+- name: Remove default rule in "WL-Lan-1"
+  os_security_group_rule:
+    security_group: "WL-Lan-1"
+    state: absent
+    remote_ip_prefix: "::/0"
+    direction: egress
+    ethertype: "IPv6"
+  when: (lan1|bool == true)
+  ignore_errors: true
+
 - name: Create security group rule in "WL-Lan-1"
   os_security_group_rule:
     security_group: "WL-Lan-1"
     remote_ip_prefix: 10.15.30.0/24
   when: (lan1|bool == true)
+  ignore_errors: true
+
+- name: Remove default rule in "WL-Lan-2"
+  os_security_group_rule:
+    security_group: "WL-Lan-2"
+    state: absent
+    remote_ip_prefix: 0.0.0.0/0
+    direction: egress
+  when: (lan2|bool == true)
+  ignore_errors: true
+
+- name: Remove default rule in "WL-Lan-2"
+  os_security_group_rule:
+    security_group: "WL-Lan-2"
+    state: absent
+    remote_ip_prefix: "::/0"
+    direction: egress
+    ethertype: "IPv6"
+  when: (lan2|bool == true)
   ignore_errors: true
 
 - name: Create security group rule in "WL-Lan-2"
@@ -114,6 +176,7 @@
        name: "gw-lan-1"
        network: "Lan1"
        security_groups: "WL-Lan-1"
+       port_security_enabled: "no"
        fixed_ips:
          - ip_address: 10.15.30.254
   when: (lan1|bool == true) and (router == "routeros")
@@ -123,16 +186,17 @@
        name: "gw-lan-2"
        network: "Lan2"
        security_groups: "WL-Lan-2"
+       port_security_enabled: "no"
        fixed_ips:
          - ip_address: 10.15.31.254
   when: (lan2|bool == true) and (router == "routeros")
 
 - name: Create RouterOS instance Lan1 only
   os_server:
-       name: "{{ username }}R1"
+       name: "{{ username }}-chr1"
        image: a22ff3d8-1cb6-4c8e-b205-280c2c957dd3
        timeout: 200
-       flavor: std.1
+       flavor: b1.1
        nics:
          - net-name : "fr-east-1-public"
          - port-name: "gw-lan-1"
@@ -142,15 +206,16 @@
        security_groups:
          - "WL-infogerance-hopla"
          - "WL-{{ username }}"
+         - "ALLOW-OUT"
        meta: "router=routeros"
   when: (lan1|bool == true) and (router == "routeros") and (lan2|bool == false)
 
 - name: Create RouterOS instance Lan1 and Lan2
   os_server:
-       name: "{{ username }}R1"
+       name: "{{ username }}-chr1"
        image: a22ff3d8-1cb6-4c8e-b205-280c2c957dd3
        timeout: 200
-       flavor: std.1
+       flavor: b1.1
        nics:
          - net-name : "fr-east-1-public"
          - port-name: "gw-lan-1"
@@ -161,6 +226,7 @@
        security_groups:
          - "WL-infogerance-hopla"
          - "WL-{{ username }}"
+         - "ALLOW-OUT"
        meta: "router=routeros"
   when: (lan1|bool == true) and (router == "routeros") and (lan2|bool == true)
 
