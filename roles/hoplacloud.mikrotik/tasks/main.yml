@@ -87,6 +87,10 @@
    routeros_command:
      commands: /ip firewall service-port set dccp disabled=yes
 
+ - name: Disable Discovery
+   routeros_command:
+     commands: /ip neighbor discovery-settings set discover-interface-list=none
+
  - name: Create input rule
    routeros_command:
      commands: /ip firewall filter add action=accept chain=input
@@ -99,9 +103,18 @@
    routeros_command:
      commands: /ip firewall filter add action=accept chain=output
 
+ - name: Configure lan1 MTU
+   routeros_command:
+     commands: /interface set ether2 mtu=1450
+
  - name: Configure lan1 interface
    routeros_command:
      commands: /ip address add address=10.15.30.254/24 interface=ether2
+
+ - name: Configure lan2 MTU
+   routeros_command:
+     commands: /interface set ether3 mtu=1450
+   when: (lan2|bool == true)
 
  - name: Configure lan2 interface
    routeros_command:
