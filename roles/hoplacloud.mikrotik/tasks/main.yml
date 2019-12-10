@@ -153,6 +153,38 @@
    routeros_command:
      commands: /system logging action set 1 disk-file-count=20
 
+ - name: Set SNMP community
+   routeros_command:
+     commands: /snmp community set [ find default=yes ] read-access=no add addresses=::/0 name="{{mikrotik_snmp_community}}"
+
+ - name: Set SNMP contact
+   routeros_command:
+     commands: /snmp set contact=infra@hopla.cloud enabled=yes location=fr-east-1 trap-interfaces=ether1
+
+ - name: Set route prefix
+   set_fact:
+     ipv4_gw_prefix: "{{ mikrotik_ipv4.split('.')[0:3] | join('.') }}"
+
+ - name: Set route
+   routeros_command:
+     commands: /ip route add distance=1 dst-address=185.116.104.0/24 gateway=ether1
+   when: (ipv4_gw_prefix != "185.116.104")
+
+ - name: Set route
+   routeros_command:
+     commands: /ip route add distance=1 dst-address=185.116.105.0/24 gateway=ether1
+   when: (ipv4_gw_prefix != "185.116.105")
+
+ - name: Set route
+   routeros_command:
+     commands: /ip route add distance=1 dst-address=185.116.106.0/24 gateway=ether1
+   when: (ipv4_gw_prefix != "185.116.106")
+
+ - name: Set route
+   routeros_command:
+     commands: /ip route add distance=1 dst-address=185.116.107.0/24 gateway=ether1
+   when: (ipv4_gw_prefix != "185.116.107")
+
  - name: Set admin password
    routeros_command:
      commands: /user set 0 password="{{mikrotik_password}}"
