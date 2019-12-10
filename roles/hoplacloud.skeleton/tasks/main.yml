@@ -204,7 +204,7 @@
 
 - name: Create RouterOS instance Lan1 only
   os_server:
-       name: "{{ username }}-chr1"
+       name: "{{ username }}chr1"
        image: a22ff3d8-1cb6-4c8e-b205-280c2c957dd3
        timeout: 200
        flavor: b1.1
@@ -222,7 +222,7 @@
 
 - name: Create RouterOS instance Lan1 and Lan2
   os_server:
-       name: "{{ username }}-chr1"
+       name: "{{ username }}chr1"
        image: a22ff3d8-1cb6-4c8e-b205-280c2c957dd3
        timeout: 200
        flavor: b1.1

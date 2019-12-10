@@ -131,7 +131,7 @@
 
  - name: Configure hostname
    routeros_command:
-     commands: /system identity set name={{ username }}-chr1
+     commands: /system identity set name={{ username }}chr1
 
  - name: Set Log to disk
    routeros_command:
