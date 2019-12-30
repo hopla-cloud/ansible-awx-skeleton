@@ -1,38 +1,45 @@
-Role Name
+hoplacloud.skeleton
 =========
 
-A brief description of the role goes here.
+Hopla.cloud role for awx to prepare a project.
+
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+Linux server Ubuntu 18.04
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+- username : customer ID
+- public_key : Public key to add in project
+- lan1(bool) : create lan1 if true
+- lan2(bool) : create lan2 if true
+- router(routeros|vr|false) : deploy a router
+
+
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+User API for customer project
+
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
+    - hosts: localhost
+      remote_user: root
       roles:
-         - { role: username.rolename, x: 42 }
+         - hoplacloud.skeleton
 
 License
 -------
 
-BSD
+GPLv3
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Joffrey Skandera for [hopla.cloud](https://hopla.cloud)
