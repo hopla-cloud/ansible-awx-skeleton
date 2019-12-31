@@ -159,7 +159,7 @@
 
  - name: Set SNMP contact
    routeros_command:
-     commands: /snmp set contact=infra@hopla.cloud enabled=yes location=fr-east-1 trap-interfaces=ether1
+     commands: /snmp set contact=support@hopla.cloud enabled=yes location=fr-east-1 trap-interfaces=ether1
 
  - name: Set route prefix
    set_fact:
