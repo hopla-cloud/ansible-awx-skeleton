@@ -15,7 +15,7 @@
 - name: Check if the authorized_keys exists
   stat:
     path: "/home/{{ username }}/.ssh/authorized_keys"
-  register: authorized_keys
+  register: stat_authorized_keys
 
 - name: Copy authorized_keys file
   copy:
@@ -23,12 +23,12 @@
     dest: "/home/{{ username }}/.ssh/authorized_keys"
     remote_src: yes
     owner: "{{ username }}"
-  when: authorized_keys.exists == False
+  when: stat_authorized_keys.stat.exists == False
 
 - name: Check if the sudo rule exists
   stat:
     path: /etc/sudoers.d/90-Hoplacloud-sudo-users
-  register: sudo
+  register: stat_sudo
 
 - name: Update sudo rules
   template:
@@ -37,4 +37,4 @@
     owner: root
     group: root
     mode: '0600'
-  when: sudo.exists == False
+  when: stat_sudo.stat.exists == False
