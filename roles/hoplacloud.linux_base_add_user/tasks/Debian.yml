@@ -38,3 +38,5 @@
     group: root
     mode: '0600'
   when: stat_sudo.stat.exists == False
+
+- meta: end_play
