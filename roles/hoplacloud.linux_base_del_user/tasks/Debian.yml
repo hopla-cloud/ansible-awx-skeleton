@@ -3,6 +3,7 @@
   shell: sleep 1; pkill -u {{ default_username }} sshd
   async: 3
   poll: 2
+  ignore_errors: True
 
 - name: Pause
   pause:
