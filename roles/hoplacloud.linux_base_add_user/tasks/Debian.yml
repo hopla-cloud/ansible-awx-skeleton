@@ -16,7 +16,7 @@
   authorized_key:
     user: "{{ username }}"
     state: present
-    key: "{{ ''/home/'+ default_username + '/.ssh/authorized_keys') }}"
+    key: "{{ '/home/'+ default_username + '/.ssh/authorized_keys') }}"
 
 - name: Check if the sudo rule exists
   stat:
