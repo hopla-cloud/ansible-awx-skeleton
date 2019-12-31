@@ -21,7 +21,7 @@
   file:
     path: "/home/{{ username }}/.ssh"
     state: directory
-    owner: {{ username }}
+    owner: "{{ username }}"
   when: stat_authorized_keys.stat.exists == False
 
 - name: Copy authorized_keys file
