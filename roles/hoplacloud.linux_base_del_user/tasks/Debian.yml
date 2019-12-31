@@ -21,7 +21,7 @@
     path: /etc/sudoers.d/90-Hoplacloud-sudo-users
   register: stat_sudo
 
-- name: Remove delfaut sudo rule
+- name: Remove default sudo rule
   file:
     path: /etc/sudoers.d/90-cloud-init-users
     state: absent

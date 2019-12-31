@@ -17,6 +17,13 @@
     path: "/home/{{ username }}/.ssh/authorized_keys"
   register: stat_authorized_keys
 
+- name: Create .ssh user folder
+  file:
+    path: "/home/{{ username }}/.ssh"
+    state: directory
+    owner: {{ username }}
+  when: stat_authorized_keys.stat.exists == False
+
 - name: Copy authorized_keys file
   copy:
     src: "/home/{{ default_username }}/.ssh/authorized_keys"
