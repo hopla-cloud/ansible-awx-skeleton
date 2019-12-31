@@ -44,7 +44,7 @@
 
 - name: Ensure keyboard is fr
   lineinfile:
-    path: /etc/ssh/sshd_config
+    path: /etc/default/keyboard
     regexp: '^XKBLAYOUT'
     line: 'XKBLAYOUT="fr"'
 
