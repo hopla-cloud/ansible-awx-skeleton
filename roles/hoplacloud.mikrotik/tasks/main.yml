@@ -185,6 +185,11 @@
      commands: /ip route add distance=1 dst-address=185.116.107.0/24 gateway=ether1
    when: (ipv4_gw_prefix != "185.116.107")
 
+ - name: Set NTP client
+   routeros_command:
+     commands: /system ntp client set enabled=yes primary-ntp=0.0.0.0 secondary-ntp=0.0.0.0 server-dns-names=0.fr.pool.ntp.org,1.fr.pool.ntp.org,2.fr.pool.ntp.org,3.fr.pool.ntp.org
+
+   when: (ipv4_gw_prefix != "185.116.107")
  - name: Set admin password
    routeros_command:
      commands: /user set 0 password="{{mikrotik_password}}"
