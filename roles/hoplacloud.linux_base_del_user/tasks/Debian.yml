@@ -1,4 +1,7 @@
 ---
+- name: Pause
+  pause:
+    seconds: 30
 - name: Delete delfaut SUDO user
   user:
     name: "{{ default_username }}"
