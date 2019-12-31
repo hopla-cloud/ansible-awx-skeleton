@@ -1,40 +1,44 @@
 ---
-
-- name: Configure en_US.UTF-8 locale
-  locale_gen:
-    name: en_US.UTF-8
-    state: present
-
-- name: Create SUDO user for the customer
+- name: Delete delfaut SUDO user
   user:
-    name: "{{ username }}"
+    name: "{{ default_username }}"
     comment: "Default sudo user created by hopla.cloud"
-    groups: sudo,admin
-    shell: /bin/bash
-    state: present
+    state: absent
+    remove: yes
 
-- name: Check that the authorized_keys exists
-  stat:
-    path: "/home/{{ username }}/.ssh/authorized_keys"
-  register: stat_authorized_keys
-
-- name: Set authorized key for user copying it from current user
-  authorized_key:
-    user: "{{ username }}"
-    state: present
-    key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/authorized_keys') }}"
-  when: stat_authorized_keys.exists == False
-
-- name: Check if the sudo rule exists
+- name: Check if the Hopla.cloud sudo rule exists
   stat:
     path: /etc/sudoers.d/90-Hoplacloud-sudo-users
   register: stat_sudo
 
-- name: Update sudo rules
-  template:
-    src: 90-Hoplacloud-sudo-users.j2
-    dest: /etc/sudoers.d/90-Hoplacloud-sudo-users
-    owner: root
-    group: root
-    mode: '0600'
+- name: Remove delfaut sudo rule
+  file:
+    path: /etc/sudoers.d/90-cloud-init-users
+    state: absent
   when: stat_sudo.exists == False
+
+- name: Ensure password ssh authentification is yes
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^PasswordAuthentication'
+    line: "PasswordAuthentication yes"
+
+- name: restart service ssh
+  systemd:
+    state: restarted
+    name: ssh
+
+- name: Set timezone to Europe/Paris
+  timezone:
+    name: Europe/Paris
+
+- name: Ensure keyboard is fr
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^XKBLAYOUT'
+    line: 'XKBLAYOUT="fr"'
+
+- name: restart service keyboard
+  systemd:
+    state: restarted
+    name: keyboard-setup
