@@ -1,5 +1,9 @@
 ---
 - hosts: "{{ instance_name }}"
+<<<<<<< HEAD
+=======
+
+>>>>>>> cdf5f37bffff6bb7aed1c7dc6a7ebdad71345cdd
   vars:
     ansible_port: "{{ hostvars[instance_name]['openstack']['metadata'].ssh_pub_port }}"
     ansible_host: "{{ hostvars[instance_name]['openstack']['metadata'].ssh_pub_ip }}"
@@ -7,9 +11,20 @@
   roles:
     - hoplacloud.linux_base_add_user
 
+<<<<<<< HEAD
 #- hosts: "{{ instance_name }}"
 #  vars:
 #    ansible_port: "{{ hostvars[instance_name]['openstack']['metadata'].ssh_pub_port }}"
 #    ansible_host: "{{ hostvars[instance_name]['openstack']['metadata'].ssh_pub_ip }}"
 #  roles:
 #    - hoplacloud.linux_base_del_user
+=======
+- hosts: "{{ instance_name }}"
+
+  vars:
+    ansible_port: "{{ hostvars[instance_name]['openstack']['metadata'].ssh_pub_port }}"
+    ansible_host: "{{ hostvars[instance_name]['openstack']['metadata'].ssh_pub_ip }}"
+    ansible_user: "{{ default_username }}"
+  roles:
+    - hoplacloud.linux_base_del_user
+>>>>>>> cdf5f37bffff6bb7aed1c7dc6a7ebdad71345cdd
