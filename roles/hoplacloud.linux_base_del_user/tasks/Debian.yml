@@ -23,7 +23,7 @@
   file:
     path: /etc/sudoers.d/90-cloud-init-users
     state: absent
-  when: stat_sudo.exists == False
+  when: stat_sudo.stat.exists == False
 
 - name: Ensure password ssh authentification is yes
   lineinfile:
