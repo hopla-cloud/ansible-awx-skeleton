@@ -12,11 +12,18 @@
     shell: /bin/bash
     state: present
 
-- name: Set authorized key for user copying it from current user
-  authorized_key:
-    user: "{{ username }}"
-    state: present
-    key: "/home/{{ default_username }}/.ssh/authorized_keys"
+- name: Check if the authorized_keys exists
+  stat:
+    path: "/home/{{ username }}/.ssh/authorized_keys"
+  register: stat_authorized_keys
+
+- name: Copy authorized_keys file
+  copy:
+    src: "/home/{{ default_username }}/.ssh/authorized_keys"
+    dest: "/home/{{ username }}/.ssh/authorized_keys"
+    remote_src: yes
+    owner: "{{ username }}"
+  when: stat_authorized_keys.exists == False
 
 - name: Check if the sudo rule exists
   stat:
