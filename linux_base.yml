@@ -1,23 +1,18 @@
 ---
 - hosts: "{{ instance_name }}"
-  pre_tasks:
-     - set_fact:
-          ssh_pub_port: "{{ hostvars[instance_name]['metadata']['ssh_pub_port'] }}"
-          ssh_pub_ip: "{{ hostvars['instance_name']['metadata']['ssh_pub_ip'] }}"
+
   vars:
-    ansible_port: "{{ ssh_pub_port }}"
-    ansible_host: "{{ ssh_pub_ip }}"
+    ansible_port: "{{ hostvars[instance_name]['openstack']['metadata'].ssh_pub_port }}"
+    ansible_host: "{{ hostvars[instance_name]['openstack']['metadata'].ssh_pub_ip }}"
     ansible_user: "{{ default_username }}"
   roles:
     - hoplacloud.linux_base_add_user
 
-#- hosts: all
-#  vars:
-#    ansible_connection:
-#    ansible_user: {{ instance_name }}
-#  pre_tasks:
-#     - set_fact:
-#          gw_ipv4: "{{ hostvars['localhost']['gw_ipv4'] }}"
-#
-#  roles:
-#    - hoplacloud._del_user
+- hosts: "{{ instance_name }}"
+
+  vars:
+    ansible_port: "{{ hostvars[instance_name]['openstack']['metadata'].ssh_pub_port }}"
+    ansible_host: "{{ hostvars[instance_name]['openstack']['metadata'].ssh_pub_ip }}"
+    ansible_user: "{{ default_username }}"
+  roles:
+    - hoplacloud.linux_base_del_user
