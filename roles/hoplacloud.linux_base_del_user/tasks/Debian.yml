@@ -2,7 +2,7 @@
 - name: Kill SSH
   shell: sleep 1; pkill -u {{ default_username }} sshd
   async: 3
-  poll: 2`
+  poll: 2
 
 - name: Pause
   pause:
