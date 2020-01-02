@@ -1,10 +1,10 @@
 Role Name
-
-hoplacloud.linux_base
+------------
+hoplacloud.linuxbase
 
 =========
 
-Hopla.cloud role for ansible to install a simple Wordpress.
+Hopla.cloud role for ansible to configure a linux system.
 
 Requirements
 ------------
@@ -31,7 +31,7 @@ Example Playbook
     - hosts: localhost
       remote_user: root
       roles:
-         - hoplacloud.linux_base
+         - hoplacloud.linuxbase
 
 License
 -------

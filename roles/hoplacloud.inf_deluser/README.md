@@ -1,10 +1,11 @@
 Role Name
+------------
 
 hoplacloud.linux_base
 
 =========
 
-Hopla.cloud role for ansible to install a simple Wordpress.
+Hopla.cloud role for ansible to delete the default user image.
 
 Requirements
 ------------
@@ -14,14 +15,13 @@ None.
 Role Variables
 --------------
 
-username: "user"
+default_username: "user"
 
 
 Dependencies
 ------------
 
-- hoplacloud.linux_update
-- hoplacloud.linux_motd
+- hoplacloud.inf
 
 
 
@@ -31,7 +31,7 @@ Example Playbook
     - hosts: localhost
       remote_user: root
       roles:
-         - hoplacloud.linux_base
+         - hoplacloud.inf_deluser
 
 License
 -------
