@@ -48,6 +48,11 @@
     name: "ALLOW-OUT"
     description: Allow output trafic.
 
+- name: Create security group "ALLOW-IN-ALL"
+  os_security_group:
+    name: "ALLOW-IN-ALL"
+    description: Allow all input trafic.
+
 - name: Create security group "WL-Lan-1"
   os_security_group:
     name: "WL-Lan-1"
@@ -98,6 +103,34 @@
     ethertype: "IPv6"
   with_items: "{{ ip_user_v6 }}"
   when: (ip_user_v6 is defined) and (ip_user_v6 |length > 4)
+  ignore_errors: true
+
+- name: Remove default rule in ALLOW-IN-ALL"
+  os_security_group_rule:
+    security_group: "ALLOW-IN-ALL"
+    state: absent
+    direction: egress
+  ignore_errors: true
+
+- name: Remove default rule in "ALLOW-IN-ALL"
+  os_security_group_rule:
+    security_group: "ALLOW-IN-ALL"
+    state: absent
+    direction: egress
+    ethertype: "IPv6"
+  ignore_errors: true
+
+- name: Create security group rule in "ALLOW-IN-ALL"
+  os_security_group_rule:
+    security_group: "ALLOW-IN-ALL"
+    remote_ip_prefix: 0.0.0.0/0
+  ignore_errors: true
+
+- name: Create security group rule in "ALLOW-IN-ALL"
+  os_security_group_rule:
+    security_group: "ALLOW-IN-ALL"
+    remote_ip_prefix: ::/0
+    ethertype: "IPv6"
   ignore_errors: true
 
 - name: Remove default rule in "WL-Lan-1"
