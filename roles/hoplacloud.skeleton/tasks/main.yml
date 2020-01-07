@@ -53,6 +53,12 @@
     name: "ALLOW-IN-ALL"
     description: Allow all input trafic.
 
+- name: Create security group "ALLOW-PUB"
+  os_security_group:
+    name: "ALLOW-PUB"
+    description: Allow trafic for chr.
+  when: (router == "routeros")
+
 - name: Create security group "WL-Lan-1"
   os_security_group:
     name: "WL-Lan-1"
@@ -131,6 +137,23 @@
     security_group: "ALLOW-IN-ALL"
     remote_ip_prefix: ::/0
     ethertype: "IPv6"
+  ignore_errors: true
+
+- name: Remove default rule in "ALLOW-PUB"
+  os_security_group_rule:
+    security_group: "ALLOW-PUB"
+    state: absent
+    direction: egress
+  when: (router == "routeros")
+  ignore_errors: true
+
+- name: Remove default rule in "ALLOW-PUB"
+  os_security_group_rule:
+    security_group: "ALLOW-PUB"
+    state: absent
+    direction: egress
+    ethertype: "IPv6"
+  when: (router == "routeros")
   ignore_errors: true
 
 - name: Remove default rule in "WL-Lan-1"
@@ -250,6 +273,7 @@
          - "WL-infogerance-hopla"
          - "WL-{{ username }}"
          - "ALLOW-OUT"
+         - "ALLOW-PUB"
        meta: "router=routeros"
   when: (lan1|bool == true) and (router == "routeros") and (lan2|bool == false)
 
@@ -269,6 +293,7 @@
          - "WL-infogerance-hopla"
          - "WL-{{ username }}"
          - "ALLOW-OUT"
+         - "ALLOW-PUB"
        meta: "router=routeros"
   when: (lan1|bool == true) and (router == "routeros") and (lan2|bool == true)
 
