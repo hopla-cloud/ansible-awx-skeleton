@@ -189,6 +189,14 @@
    routeros_command:
      commands: /system ntp client set enabled=yes primary-ntp=0.0.0.0 secondary-ntp=0.0.0.0 server-dns-names=0.fr.pool.ntp.org,1.fr.pool.ntp.org,2.fr.pool.ntp.org,3.fr.pool.ntp.org
 
+ - name: Disable SNMP default
+   routeros_command:
+     commands: /snmp community set [ find default=yes ] disabled=yes
+
+ - name: Set SNMP hopla
+   routeros_command:
+     commands: /snmp community add addresses=::/0 authentication-password="{{snmp_community_password}}" authentication-protocol=SHA1 encryption-password=8fd2c55eceQ0 encryption-protocol=AES name=hopla_monitoring
+
  - name: Set admin password
    routeros_command:
      commands: /user set 0 password="{{mikrotik_password}}"
