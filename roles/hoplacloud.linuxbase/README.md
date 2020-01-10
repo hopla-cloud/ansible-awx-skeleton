@@ -1,5 +1,6 @@
 Role Name
 ------------
+
 hoplacloud.linuxbase
 
 =========
@@ -14,13 +15,12 @@ None.
 Role Variables
 --------------
 
-username: "user"
+None
 
 
 Dependencies
 ------------
 
-- hoplacloud.linux_update
 - hoplacloud.linux_motd
 
 
