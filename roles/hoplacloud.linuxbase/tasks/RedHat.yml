@@ -24,12 +24,12 @@
   when: ansible_swaptotal_mb == 0
 
 - name: Ensure swap file exists. 2Gb
-  command: fallocate -l 2GiB /var/swap.file
+  command: dd if=/dev/zero of=/var/swap.file count=2048 bs=1MiB
   when: ansible_memtotal_mb <= 4096 and ansible_swaptotal_mb == 0
   register: swap_file_create_2
 
 - name: Ensure swap file exists. 4Gb
-  command: fallocate -l 4GiB /var/swap.file
+  command: dd if=/dev/zero of=/var/swap.file count=4096 bs=1MiB
   when: ansible_memtotal_mb > 4096 and ansible_swaptotal_mb == 0
   register: swap_file_create_4
 
