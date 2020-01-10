@@ -4,10 +4,12 @@
   async: 3
   poll: 2
   ignore_errors: True
+  when: default_username != 'root'
 
 - name: Pause
   pause:
-    seconds: 10
+    seconds: 3
+  when: default_username != 'root'
 
 - name: Delete delfaut SUDO user
   user:
@@ -15,14 +17,16 @@
     comment: "Default sudo user created by hopla.cloud"
     state: absent
     remove: yes
+  when: default_username != 'root'
 
 - name: Check if the Hopla.cloud sudo rule exists
   stat:
     path: /etc/sudoers.d/90-Hoplacloud-sudo-users
   register: stat_sudo
+  when: default_username != 'root'
 
 - name: Remove default sudo rule
   file:
     path: /etc/sudoers.d/90-cloud-init-users
     state: absent
-  when: stat_sudo.stat.exists == True
+  when: stat_sudo.stat.exists == True and default_username != 'root'
