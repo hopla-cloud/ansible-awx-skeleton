@@ -14,6 +14,9 @@
   timezone:
     name: Europe/Paris
 
+- name: Ensure keymap is fr azerty
+  command: localectl set-keymap fr-azerty
+
 - name: Manage swap file entry in fstab.
   mount:
    name: none
