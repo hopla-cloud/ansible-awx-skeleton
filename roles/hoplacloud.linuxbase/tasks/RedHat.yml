@@ -8,7 +8,7 @@
 - name: restart service ssh
   systemd:
     state: restarted
-    name: ssh
+    name: sshd
 
 - name: Set timezone to Europe/Paris
   timezone:
