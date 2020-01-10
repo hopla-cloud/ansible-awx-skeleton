@@ -23,7 +23,6 @@
   stat:
     path: /etc/sudoers.d/90-Hoplacloud-sudo-users
   register: stat_sudo
-  when: default_username != 'root'
 
 - name: Remove default sudo rule
   file:
