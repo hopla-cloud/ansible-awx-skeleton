@@ -20,5 +20,4 @@ galaxy_info:
     - linux
     - hoplacloud
 
-dependencies:
-    - hoplacloud.linux_motd
+dependencies: []
