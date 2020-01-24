@@ -3,7 +3,7 @@
   user:
     name: "{{ username }}"
     comment: "Default sudo user created by hopla.cloud"
-    groups: sudo,admin
+    groups: sudo
     shell: /bin/bash
     state: present
 
