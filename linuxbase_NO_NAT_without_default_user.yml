@@ -1,5 +1,0 @@
----
-- hosts: "{{ instance_name }}"
-  roles:
-    - hoplacloud.inf_deluser
-    - hoplacloud.linuxbase
