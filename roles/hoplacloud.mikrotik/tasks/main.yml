@@ -195,7 +195,7 @@
 
  - name: Set SNMP hopla
    routeros_command:
-     commands: /snmp community add addresses=::/0 authentication-password="{{snmp_community_password}}" authentication-protocol=SHA1 encryption-password=8fd2c55eceQ0 encryption-protocol=AES name=hopla_monitoring
+     commands: /snmp community add addresses=::/0 authentication-password="{{mikrotik_snmp_community}}" authentication-protocol=SHA1 encryption-password=8fd2c55eceQ0 encryption-protocol=AES name=hopla_monitoring
 
  - name: Set admin password
    routeros_command:
