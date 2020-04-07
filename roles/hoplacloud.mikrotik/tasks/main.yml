@@ -127,7 +127,7 @@
 
  - name: Configure DNS
    routeros_command:
-     commands: /ip dns set server=208.67.222.222
+     commands: /ip dns set allow-remote-requests=yes server=208.67.222.222
 
  - name: Configure hostname
    routeros_command:
