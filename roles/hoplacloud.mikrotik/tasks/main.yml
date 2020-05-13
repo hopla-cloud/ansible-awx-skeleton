@@ -31,7 +31,11 @@
    routeros_command:
      commands: /system package disable ups
 
- - name: Enable IPv6
+ - name: Enable security package
+   routeros_command:
+     commands: /system package enable security
+
+ - name: Enable IPv6 package
    routeros_command:
      commands: /system package enable ipv6
 
