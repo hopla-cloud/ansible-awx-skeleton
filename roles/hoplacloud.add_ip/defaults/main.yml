@@ -1,0 +1,13 @@
+---
+# defaults file for hoplacloud.add_ip
+#api_user
+#api_password
+#api_project
+#username
+#ip_userv4
+#ip_userv6
+#ip_hopla
+#public_key
+#lan1|bool
+#lan1|bool
+#router(routeros|vr|false)

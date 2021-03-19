@@ -1,0 +1,22 @@
+---
+# tasks file for hoplacloud.add_ip
+
+- name: Create security group "WL-infogerance-hopla"
+  os_security_group:
+    name: "WL-infogerance-hopla"
+    description: Whitelist des IP utilisees par hopla dans le cadre de votre contrat d'infogerance.
+
+- name: Create security group rule in "WL-infogerance-hopla" IPv4
+  os_security_group_rule:
+    security_group: "WL-infogerance-hopla"
+    remote_ip_prefix: "{{ item }}"
+  with_items: "{{ ip_hopla_v4 }}"
+  ignore_errors: true
+
+- name: Create security group rule in "WL-infogerance-hopla" IPv6
+  os_security_group_rule:
+    security_group: "WL-infogerance-hopla"
+    remote_ip_prefix: "{{ item }}"
+    ethertype: "IPv6"
+  with_items: "{{ ip_hopla_v6 }}"
+  ignore_errors: true
