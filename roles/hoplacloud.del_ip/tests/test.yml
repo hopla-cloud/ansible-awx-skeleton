@@ -1,6 +1,5 @@
 ---
 - hosts: localhost
-  gather_facts: no
+  remote_user: root
   roles:
-    - hoplacloud.add_ip
     - hoplacloud.del_ip

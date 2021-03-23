@@ -1,0 +1,21 @@
+---
+# tasks file for hoplacloud.del_ip
+
+- name: Delete security group rule in "WL-infogerance-hopla" IPv4
+  os_security_group_rule:
+    security_group: "WL-infogerance-hopla"
+    remote_ip_prefix: "{{ item }}"
+    state: absent
+  with_items: "{{ ip_hopla_v4_del }}"
+  ignore_errors: true
+  when: ip_hopla_v4_del is defined
+
+- name: Create security group rule in "WL-infogerance-hopla" IPv6
+  os_security_group_rule:
+    security_group: "WL-infogerance-hopla"
+    remote_ip_prefix: "{{ item }}"
+    ethertype: "IPv6"
+    state: absent
+  with_items: "{{ ip_hopla_v6_del }}"
+  ignore_errors: true
+  when: ip_hopla_v6_del is defined
