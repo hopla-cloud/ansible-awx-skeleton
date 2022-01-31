@@ -5,7 +5,7 @@
      - os_server_info:
          filters:
            name: "{{ username }}chr1"
-          register: chr
+       register: chr
      - ansible.builtin.debug:
           msg: "{{ hostvars['localhost'] }}"
      - set_fact:
