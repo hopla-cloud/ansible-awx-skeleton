@@ -6,7 +6,7 @@
 
 - name: Add script
   community.network.routeros_command:
-    commands: '/system script add dont-require-permissions=yes name=conf-ip owner=admin source="{{source_script}}"'
+    commands: /system script add dont-require-permissions=yes name=conf-ip owner=admin source="{{source_script}}"
 
 - name: Run script
   community.network.routeros_command:
