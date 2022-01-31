@@ -7,8 +7,10 @@
            name: "{{ username }}chr1"
      - set_fact:
           mikrotik_ipv4: "{{ openstack_servers | json_query('[].public_v4') }}"
-          mikrotik_ipv6: "{{ openstack_servers | json_query('[].public_v6') | join('\n') }}"
-          mikrotik_id: "{{ openstack_servers | json_query('[].id') | join('\n') }}"
+          mikrotik_ipv6: "{{ openstack_servers | json_query('[].public_v6') }}"
+          mikrotik_id: "{{ openstack_servers | json_query('[].id') }}"
+     - ansible.builtin.debug:
+          msg: mikrotik_ipv4 {{ mikrotik_ipv4 }}
      - os_port_facts:
          filters:
            device_id: "{{ mikrotik_id }}"
