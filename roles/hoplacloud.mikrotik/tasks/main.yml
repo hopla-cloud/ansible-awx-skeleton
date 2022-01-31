@@ -1,210 +1,211 @@
 ---
 # tasks file for hoplacloud.mikrotik
- - set_fact:
-      source_script: ":delay 15\\r\\ \\n/ip address add address={{mikrotik_ipv4}}/24 interface=ether1\\r\\ \\n/ip route add distance=1 gateway={{gw_ipv4}}\\r\\ \\n/ipv6 address add address={{mikrotik_ipv6}}/64 interface=ether1\\r\\ \\n/ipv6 route add distance=1 gateway={{gw_ipv6}}\\r\\ \\n/system scheduler disable Config-ip"
+- name: Generate script
+  set_fact:
+    source_script: ":delay 15\\r\\ \\n/ip address add address={{mikrotik_ipv4}}/24 interface=ether1\\r\\ \\n/ip route add distance=1 gateway={{gw_ipv4}}\\r\\ \\n/ipv6 address add address={{mikrotik_ipv6}}/64 interface=ether1\\r\\ \\n/ipv6 route add distance=1 gateway={{gw_ipv6}}\\r\\ \\n/system scheduler disable Config-ip"
 
- - name: Add script
-   community.network.routeros_command:
-     commands: '/system script add dont-require-permissions=yes name=conf-ip owner=admin source="{{source_script}}"'
+- name: Add script
+  community.network.routeros_command:
+    commands: '/system script add dont-require-permissions=yes name=conf-ip owner=admin source="{{source_script}}"'
 
- - name: Run script
-   community.network.routeros_command:
-     commands: /system schedule add name=Config-ip on-event="/system script run conf-ip" start-time=startup interval=0
+- name: Run script
+  community.network.routeros_command:
+    commands: /system schedule add name=Config-ip on-event="/system script run conf-ip" start-time=startup interval=0
 
- - name: Disable dhcp package
-   community.network.routeros_command:
-     commands: /system package disable dhcp
+- name: Disable dhcp package
+  community.network.routeros_command:
+    commands: /system package disable dhcp
 
- - name: Disable wireless package
-   community.network.routeros_command:
-     commands: /system package disable wireless
+- name: Disable wireless package
+  community.network.routeros_command:
+    commands: /system package disable wireless
 
- - name: Disable hotspot package
-   community.network.routeros_command:
-     commands: /system package disable hotspot
+- name: Disable hotspot package
+  community.network.routeros_command:
+    commands: /system package disable hotspot
 
- - name: Disable mpls package
-   community.network.routeros_command:
-     commands: /system package disable mpls
+- name: Disable mpls package
+  community.network.routeros_command:
+    commands: /system package disable mpls
 
- - name: Disable ups package
-   community.network.routeros_command:
-     commands: /system package disable ups
+- name: Disable ups package
+  community.network.routeros_command:
+    commands: /system package disable ups
 
- - name: Enable security package
-   community.network.routeros_command:
-     commands: /system package enable security
+- name: Enable security package
+  community.network.routeros_command:
+    commands: /system package enable security
 
- - name: Enable IPv6 package
-   community.network.routeros_command:
-     commands: /system package enable ipv6
+- name: Enable IPv6 package
+  community.network.routeros_command:
+    commands: /system package enable ipv6
 
- - name: Disable services [1/6]
-   community.network.routeros_command:
-     commands: /ip service disable telnet
+- name: Disable services [1/6]
+  community.network.routeros_command:
+    commands: /ip service disable telnet
 
- - name: Disable services [2/6]
-   community.network.routeros_command:
-     commands: /ip service disable ftp
+- name: Disable services [2/6]
+  community.network.routeros_command:
+    commands: /ip service disable ftp
 
- - name: Disable services [3/6]
-   community.network.routeros_command:
-     commands: /ip service disable www
+- name: Disable services [3/6]
+  community.network.routeros_command:
+    commands: /ip service disable www
 
- - name: Disable services [4/6]
-   community.network.routeros_command:
-     commands: /ip service disable api
+- name: Disable services [4/6]
+  community.network.routeros_command:
+    commands: /ip service disable api
 
- - name: Disable services [5/6]
-   community.network.routeros_command:
-     commands: /ip service disable api-ssl
+- name: Disable services [5/6]
+  community.network.routeros_command:
+    commands: /ip service disable api-ssl
 
- - name: Disable services [6/6]
-   community.network.routeros_command:
-     commands: /ip service disable www-ssl
+- name: Disable services [6/6]
+  community.network.routeros_command:
+    commands: /ip service disable www-ssl
 
- - name: Disable services port [1/7]
-   community.network.routeros_command:
-     commands: /ip firewall service-port set sctp disabled=yes
+- name: Disable services port [1/7]
+  community.network.routeros_command:
+    commands: /ip firewall service-port set sctp disabled=yes
 
- - name: Disable services port [2/7]
-   community.network.routeros_command:
-     commands: /ip firewall service-port set irc disabled=yes
+- name: Disable services port [2/7]
+  community.network.routeros_command:
+    commands: /ip firewall service-port set irc disabled=yes
 
- - name: Disable services port [3/7]
-   community.network.routeros_command:
-     commands: /ip firewall service-port set h323 disabled=yes
+- name: Disable services port [3/7]
+  community.network.routeros_command:
+    commands: /ip firewall service-port set h323 disabled=yes
 
- - name: Disable services port [4/7]
-   community.network.routeros_command:
-     commands: /ip firewall service-port set sip disabled=yes
+- name: Disable services port [4/7]
+  community.network.routeros_command:
+    commands: /ip firewall service-port set sip disabled=yes
 
- - name: Disable services port [5/7]
-   community.network.routeros_command:
-     commands: /ip firewall service-port set pptp disabled=yes
+- name: Disable services port [5/7]
+  community.network.routeros_command:
+    commands: /ip firewall service-port set pptp disabled=yes
 
- - name: Disable services port [6/7]
-   community.network.routeros_command:
-     commands: /ip firewall service-port set udplite disabled=yes
+- name: Disable services port [6/7]
+  community.network.routeros_command:
+    commands: /ip firewall service-port set udplite disabled=yes
 
- - name: Disable services port [7/7]
-   community.network.routeros_command:
-     commands: /ip firewall service-port set dccp disabled=yes
+- name: Disable services port [7/7]
+  community.network.routeros_command:
+    commands: /ip firewall service-port set dccp disabled=yes
 
- - name: Disable Discovery
-   community.network.routeros_command:
-     commands: /ip neighbor discovery-settings set discover-interface-list=none
+- name: Disable Discovery
+  community.network.routeros_command:
+    commands: /ip neighbor discovery-settings set discover-interface-list=none
 
- - name: Create input rule
-   community.network.routeros_command:
-     commands: /ip firewall filter add action=accept chain=input
+- name: Create input rule
+  community.network.routeros_command:
+    commands: /ip firewall filter add action=accept chain=input
 
- - name: Create forward rule
-   community.network.routeros_command:
-     commands: /ip firewall filter add action=accept chain=forward
+- name: Create forward rule
+  community.network.routeros_command:
+    commands: /ip firewall filter add action=accept chain=forward
 
- - name: Create output rule
-   community.network.routeros_command:
-     commands: /ip firewall filter add action=accept chain=output
+- name: Create output rule
+  community.network.routeros_command:
+    commands: /ip firewall filter add action=accept chain=output
 
- - name: Configure lan1 MTU
-   community.network.routeros_command:
-     commands: /interface set ether2 mtu=1450
+- name: Configure lan1 MTU
+  community.network.routeros_command:
+    commands: /interface set ether2 mtu=1450
 
- - name: Configure lan1 interface
-   community.network.routeros_command:
-     commands: /ip address add address=10.15.30.254/24 interface=ether2
+- name: Configure lan1 interface
+  community.network.routeros_command:
+    commands: /ip address add address=10.15.30.254/24 interface=ether2
 
- - name: Configure lan2 MTU
-   community.network.routeros_command:
-     commands: /interface set ether3 mtu=1450
+- name: Configure lan2 MTU
+  community.network.routeros_command:
+    commands: /interface set ether3 mtu=1450
    when: (lan2|bool == true)
 
- - name: Configure lan2 interface
-   community.network.routeros_command:
-     commands: /ip address add address=10.15.31.254/24 interface=ether3
+- name: Configure lan2 interface
+  community.network.routeros_command:
+    commands: /ip address add address=10.15.31.254/24 interface=ether3
    when: (lan2|bool == true)
 
- - name: Configure NAT
-   community.network.routeros_command:
-     commands: /ip firewall nat add action=masquerade chain=srcnat out-interface=ether1
+- name: Configure NAT
+  community.network.routeros_command:
+    commands: /ip firewall nat add action=masquerade chain=srcnat out-interface=ether1
 
- - name: Configure DNS
-   community.network.routeros_command:
-     commands: /ip dns set allow-remote-requests=yes server=208.67.222.222
+- name: Configure DNS
+  community.network.routeros_command:
+    commands: /ip dns set allow-remote-requests=yes server=208.67.222.222
 
- - name: Configure hostname
-   community.network.routeros_command:
-     commands: /system identity set name={{ username }}chr1
+- name: Configure hostname
+  community.network.routeros_command:
+    commands: /system identity set name={{ username }}chr1
 
- - name: Set Log to disk
-   community.network.routeros_command:
-     commands: /system logging add action=disk topics=critical
+- name: Set Log to disk
+  community.network.routeros_command:
+    commands: /system logging add action=disk topics=critical
 
- - name: Set Log to disk
-   community.network.routeros_command:
-     commands: /system logging add action=disk topics=error
+- name: Set Log to disk
+  community.network.routeros_command:
+    commands: /system logging add action=disk topics=error
 
- - name: Set Log to disk
-   community.network.routeros_command:
-     commands: /system logging add action=disk topics=info
+- name: Set Log to disk
+  community.network.routeros_command:
+    commands: /system logging add action=disk topics=info
 
- - name: Set Log to disk
-   community.network.routeros_command:
-     commands: /system logging add action=disk topics=warning
+- name: Set Log to disk
+  community.network.routeros_command:
+    commands: /system logging add action=disk topics=warning
 
- - name: Set Lograte
-   community.network.routeros_command:
-     commands: /system logging action set 1 disk-file-count=20
+- name: Set Lograte
+  community.network.routeros_command:
+    commands: /system logging action set 1 disk-file-count=20
 
- - name: Set SNMP community
-   community.network.routeros_command:
-     commands: /snmp community set [ find default=yes ] read-access=no add addresses=::/0 name="{{mikrotik_snmp_community}}"
+- name: Set SNMP community
+  community.network.routeros_command:
+    commands: /snmp community set [ find default=yes ] read-access=no add addresses=::/0 name="{{mikrotik_snmp_community}}"
 
- - name: Set SNMP contact
-   community.network.routeros_command:
-     commands: /snmp set contact=support@hopla.cloud enabled=yes location=fr-east-1 trap-interfaces=ether1
+- name: Set SNMP contact
+  community.network.routeros_command:
+    commands: /snmp set contact=support@hopla.cloud enabled=yes location=fr-east-1 trap-interfaces=ether1
 
- - name: Set route prefix
+- name: Set route prefix
    set_fact:
      ipv4_gw_prefix: "{{ mikrotik_ipv4.split('.')[0:3] | join('.') }}"
 
- - name: Set route
-   community.network.routeros_command:
-     commands: /ip route add distance=1 dst-address=185.116.104.0/24 gateway=ether1
+- name: Set route
+  community.network.routeros_command:
+    commands: /ip route add distance=1 dst-address=185.116.104.0/24 gateway=ether1
    when: (ipv4_gw_prefix != "185.116.104")
 
- - name: Set route
-   community.network.routeros_command:
-     commands: /ip route add distance=1 dst-address=185.116.105.0/24 gateway=ether1
+- name: Set route
+  community.network.routeros_command:
+    commands: /ip route add distance=1 dst-address=185.116.105.0/24 gateway=ether1
    when: (ipv4_gw_prefix != "185.116.105")
 
- - name: Set route
-   community.network.routeros_command:
-     commands: /ip route add distance=1 dst-address=185.116.106.0/24 gateway=ether1
+- name: Set route
+  community.network.routeros_command:
+    commands: /ip route add distance=1 dst-address=185.116.106.0/24 gateway=ether1
    when: (ipv4_gw_prefix != "185.116.106")
 
- - name: Set route
-   community.network.routeros_command:
-     commands: /ip route add distance=1 dst-address=185.116.107.0/24 gateway=ether1
+- name: Set route
+  community.network.routeros_command:
+    commands: /ip route add distance=1 dst-address=185.116.107.0/24 gateway=ether1
    when: (ipv4_gw_prefix != "185.116.107")
 
- - name: Set NTP client
-   community.network.routeros_command:
-     commands: /system ntp client set enabled=yes primary-ntp=0.0.0.0 secondary-ntp=0.0.0.0 server-dns-names=0.fr.pool.ntp.org,1.fr.pool.ntp.org,2.fr.pool.ntp.org,3.fr.pool.ntp.org
+- name: Set NTP client
+  community.network.routeros_command:
+    commands: /system ntp client set enabled=yes primary-ntp=0.0.0.0 secondary-ntp=0.0.0.0 server-dns-names=0.fr.pool.ntp.org,1.fr.pool.ntp.org,2.fr.pool.ntp.org,3.fr.pool.ntp.org
 
- - name: Disable SNMP default
-   community.network.routeros_command:
-     commands: /snmp community set [ find default=yes ] disabled=yes
+- name: Disable SNMP default
+  community.network.routeros_command:
+    commands: /snmp community set [ find default=yes ] disabled=yes
 
- - name: Set SNMP hopla
-   community.network.routeros_command:
-     commands: /snmp community add addresses=::/0 authentication-password="{{mikrotik_snmp_community}}" authentication-protocol=SHA1 encryption-password=8fd2c55eceQ0 encryption-protocol=AES name=hopla_monitoring
+- name: Set SNMP hopla
+  community.network.routeros_command:
+    commands: /snmp community add addresses=::/0 authentication-password="{{mikrotik_snmp_community}}" authentication-protocol=SHA1 encryption-password=8fd2c55eceQ0 encryption-protocol=AES name=hopla_monitoring
 
- - name: Set admin password
-   community.network.routeros_command:
-     commands: /user set 0 password="{{mikrotik_password}}"
+- name: Set admin password
+  community.network.routeros_command:
+    commands: /user set 0 password="{{mikrotik_password}}"
 
- - name: Install udpate
-   community.network.routeros_command:
-     commands: /system package update install
+- name: Install udpate
+  community.network.routeros_command:
+    commands: /system package update install
