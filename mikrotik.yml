@@ -6,7 +6,7 @@
          filters:
            name: "{{ username }}chr1"
      - set_fact:
-          mikrotik_ipv4: "{{ openstack_servers | json_query('[].public_v4') | join('\n') }}"
+          mikrotik_ipv4: "{{ openstack_servers | json_query('[].public_v4') }}"
           mikrotik_ipv6: "{{ openstack_servers | json_query('[].public_v6') | join('\n') }}"
           mikrotik_id: "{{ openstack_servers | json_query('[].id') | join('\n') }}"
      - os_port_facts:
