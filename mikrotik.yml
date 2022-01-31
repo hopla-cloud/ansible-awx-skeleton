@@ -5,6 +5,8 @@
      - os_server_facts:
          filters:
            name: "{{ username }}chr1"
+     - ansible.builtin.debug:
+          var: ansible_facts
      - set_fact:
           mikrotik_ipv4: "{{ openstack_servers }}"
           mikrotik_ipv6: "{{ openstack_servers | json_query('[0].public_v6') }}"
