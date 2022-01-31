@@ -3,6 +3,6 @@ collections:
   type: galaxy
   version: 4.0.2
 
-- name: community.general
+- name: community.network
   type: galaxy
   version: 3.0.0
