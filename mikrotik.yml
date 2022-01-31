@@ -9,9 +9,9 @@
      - ansible.builtin.debug:
           msg: "{{ hostvars['localhost'] }}"
      - set_fact:
-          mikrotik_ipv4: "{{ chr.openstack_servers }}"
-          mikrotik_ipv6: "{{ chr.openstack_servers | json_query('[0].public_v6') }}"
-          mikrotik_id: "{{ chr.openstack_servers | json_query('[0].id') }}"
+          mikrotik_ipv4: "{{ openstack_servers | json_query('[].public_v4') | join('\n') }}"
+          mikrotik_ipv6: "{{ openstack_servers | json_query('[].public_v6') | join('\n') }}"
+          mikrotik_id: "{{ openstack_servers | json_query('[].id') | join('\n') }}"
      - ansible.builtin.debug:
           msg: mikrotik_ipv4 {{ mikrotik_ipv4 }}
      - os_port_facts:
