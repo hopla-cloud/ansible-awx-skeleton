@@ -118,7 +118,7 @@
 
 - name: Configure lan2 MTU
   community.network.routeros_command:
-    commands: /interface set ether3 mtu=1450
+    commands: "/interface set ether3 mtu=1450"
   when: (lan2|bool == true)
 
 - name: Configure lan2 interface
