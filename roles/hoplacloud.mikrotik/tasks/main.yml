@@ -119,12 +119,12 @@
 - name: Configure lan2 MTU
   community.network.routeros_command:
     commands: /interface set ether3 mtu=1450
-   when: (lan2|bool == true)
+  when: (lan2|bool == true)
 
 - name: Configure lan2 interface
   community.network.routeros_command:
     commands: /ip address add address=10.15.31.254/24 interface=ether3
-   when: (lan2|bool == true)
+  when: (lan2|bool == true)
 
 - name: Configure NAT
   community.network.routeros_command:
@@ -167,28 +167,28 @@
     commands: /snmp set contact=support@hopla.cloud enabled=yes location=fr-east-1 trap-interfaces=ether1
 
 - name: Set route prefix
-   set_fact:
-     ipv4_gw_prefix: "{{ mikrotik_ipv4.split('.')[0:3] | join('.') }}"
+  set_fact:
+    ipv4_gw_prefix: "{{ mikrotik_ipv4.split('.')[0:3] | join('.') }}"
 
 - name: Set route
   community.network.routeros_command:
     commands: /ip route add distance=1 dst-address=185.116.104.0/24 gateway=ether1
-   when: (ipv4_gw_prefix != "185.116.104")
+  when: (ipv4_gw_prefix != "185.116.104")
 
 - name: Set route
   community.network.routeros_command:
     commands: /ip route add distance=1 dst-address=185.116.105.0/24 gateway=ether1
-   when: (ipv4_gw_prefix != "185.116.105")
+  when: (ipv4_gw_prefix != "185.116.105")
 
 - name: Set route
   community.network.routeros_command:
     commands: /ip route add distance=1 dst-address=185.116.106.0/24 gateway=ether1
-   when: (ipv4_gw_prefix != "185.116.106")
+  when: (ipv4_gw_prefix != "185.116.106")
 
 - name: Set route
   community.network.routeros_command:
     commands: /ip route add distance=1 dst-address=185.116.107.0/24 gateway=ether1
-   when: (ipv4_gw_prefix != "185.116.107")
+  when: (ipv4_gw_prefix != "185.116.107")
 
 - name: Set NTP client
   community.network.routeros_command:
