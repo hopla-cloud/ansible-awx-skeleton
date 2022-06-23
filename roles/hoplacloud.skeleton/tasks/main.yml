@@ -278,7 +278,7 @@
        name: "{{ username }}chr1"
        image: a22ff3d8-1cb6-4c8e-b205-280c2c957dd3
        timeout: 200
-       flavor: b1.1
+       flavor: b2.1
        nics:
          - net-name : "fr-east-1-public"
          - port-name: "gw-lan-1"
@@ -297,7 +297,7 @@
        name: "{{ username }}chr1"
        image: a22ff3d8-1cb6-4c8e-b205-280c2c957dd3
        timeout: 200
-       flavor: b1.1
+       flavor: b2.1
        nics:
          - net-name : "fr-east-1-public"
          - port-name: "gw-lan-1"
