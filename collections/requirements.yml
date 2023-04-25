@@ -10,3 +10,7 @@ collections:
 - name: community.routeros
   type: galaxy
   version: 2.0.0
+  
+- name: openstack.cloud
+  type: galaxy
+  version: 2.1.0
