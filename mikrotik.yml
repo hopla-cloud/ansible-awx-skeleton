@@ -21,8 +21,8 @@
      - set_fact:
           query_gw_v4: "[?ip_address=='{{ mikrotik_ipv4 }}'].subnet_id"
           query_gw_v6: "[?ip_address=='{{ mikrotik_ipv6 }}'].subnet_id"
-          subnet_id_v4: "{{ chr_port.openstack_ports | json_query('[].fixed_ips[]') }}"
-          subnet_id_v6: "{{ chr_port.openstack_ports | json_query('[].fixed_ips[]') }}"
+          subnet_id_v4: "{{ chr_port.ports | json_query('[].fixed_ips[]') }}"
+          subnet_id_v6: "{{ chr_port.ports | json_query('[].fixed_ips[]') }}"
      - set_fact:
           subnet_id_v4: "{{ subnet_id_v4 | json_query(query_gw_v4) | join('\n') }}"
           subnet_id_v6: "{{ subnet_id_v6 | json_query(query_gw_v6) | join('\n') }}"
@@ -31,8 +31,8 @@
            id: "{{ subnet_id_v4 }}"
        register: chr_subnet
      - set_fact:
-          gw_ipv4: "{{ chr_subnet.openstack_subnets | json_query('[].gateway_ip') | join('\n') }}"
-          cidr_ipv4: "{{ chr_subnet.openstack_subnets | json_query('[].cidr') | join('\n') }}"
+          gw_ipv4: "{{ chr_subnet.subnets | json_query('[].gateway_ip') | join('\n') }}"
+          cidr_ipv4: "{{ chr_subnet.subnets | json_query('[].cidr') | join('\n') }}"
      - os_subnets_info:
          filters:
            id: "{{ subnet_id_v6 }}"
