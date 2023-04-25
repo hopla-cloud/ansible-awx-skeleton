@@ -38,8 +38,8 @@
            id: "{{ subnet_id_v6 }}"
        register: chr_subnet_v6
      - set_fact:
-          gw_ipv6: "{{ chr_subnet_v6.openstack_subnets | json_query('[].gateway_ip') | join('\n') }}"
-          cidr_ipv6: "{{ chr_subnet_v6.openstack_subnets | json_query('[].cidr') | join('\n') }}"
+          gw_ipv6: "{{ chr_subnet_v6.subnets | json_query('[].gateway_ip') | join('\n') }}"
+          cidr_ipv6: "{{ chr_subnet_v6.subnets | json_query('[].cidr') | join('\n') }}"
 
 - hosts: "{{ username }}chr1"
   gather_facts: no
