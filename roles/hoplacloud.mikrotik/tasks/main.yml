@@ -1,5 +1,9 @@
 ---
 # tasks file for hoplacloud.mikrotik
+- name: Set admin password
+  community.routeros.command:
+    commands: /user set 0 password="{{mikrotik_password}}"
+
 - name: Generate script
   set_fact:
     source_script: ":delay 15\\r\\ \\n/ip address add address={{mikrotik_ipv4}}/24 interface=ether1\\r\\ \\n/ip route add distance=1 gateway={{gw_ipv4}}\\r\\ \\n/ipv6 address add address={{mikrotik_ipv6}}/64 interface=ether1\\r\\ \\n/ipv6 route add distance=1 gateway={{gw_ipv6}}\\r\\ \\n/system scheduler disable Config-ip"
@@ -201,10 +205,6 @@
 - name: Set SNMP hopla
   community.routeros.command:
     commands: /snmp community add addresses=::/0 authentication-password="{{mikrotik_snmp_community}}" authentication-protocol=SHA1 encryption-password=8fd2c55eceQ0 encryption-protocol=AES name=hopla_monitoring
-
-- name: Set admin password
-  community.routeros.command:
-    commands: /user set 0 password="{{mikrotik_password}}"
 
 - name: Install udpate
   community.routeros.command:
