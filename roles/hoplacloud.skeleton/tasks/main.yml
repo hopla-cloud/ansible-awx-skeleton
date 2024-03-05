@@ -276,11 +276,11 @@
 - name: Create RouterOS instance Lan1 only
   os_server:
        name: "{{ username }}chr1"
-       image: a22ff3d8-1cb6-4c8e-b205-280c2c957dd3
+       image: 1961fefc-1db1-4ae5-ab2d-ad84ec8db92a
        timeout: 200
        flavor: b2.1
        nics:
-         - net-name : "fr-east-1-public"
+         - net-name : "fr-east-2-public"
          - port-name: "gw-lan-1"
        auto_ip: no
        boot_from_volume: no
@@ -295,11 +295,11 @@
 - name: Create RouterOS instance Lan1 and Lan2
   os_server:
        name: "{{ username }}chr1"
-       image: a22ff3d8-1cb6-4c8e-b205-280c2c957dd3
+       image: 1961fefc-1db1-4ae5-ab2d-ad84ec8db92a
        timeout: 200
        flavor: b2.1
        nics:
-         - net-name : "fr-east-1-public"
+         - net-name : "fr-east-2-public"
          - port-name: "gw-lan-1"
          - port-name: "gw-lan-2"
        auto_ip: no
@@ -315,7 +315,7 @@
 - name: Create VR for Lan1 only
   os_router:
     name: "VR1"
-    network: "fr-east-1-public"
+    network: "fr-east-2-public"
     interfaces:
       - "Lan-1"
   when: (lan1|bool == true) and (router == "vr") and (lan2|bool == false)
@@ -323,7 +323,7 @@
 - name: Create VR for Lan1 and Lan2
   os_router:
     name: "VR1"
-    network: "fr-east-1-public"
+    network: "fr-east-2-public"
     interfaces:
       - "Lan-1"
       - "Lan-2"
