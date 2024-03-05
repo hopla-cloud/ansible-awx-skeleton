@@ -44,8 +44,8 @@
 - hosts: "{{ username }}chr1"
   gather_facts: no
   vars:
-    ansible_connection: network_cli
-    ansible_network_os: routeros
+    ansible_connection: ansible.netcommon.network_cli
+    ansible_network_os: community.network.routeros
     ansible_user: admin
   pre_tasks:
      - set_fact:
