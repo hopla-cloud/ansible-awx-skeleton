@@ -47,7 +47,7 @@
     ansible_connection: ansible.netcommon.network_cli
     ansible_network_os: community.routeros.routeros
     ansible_user: admin
-    ansiblessh_pass: hopla
+    ansible_ssh_pass: hopla
   pre_tasks:
      - set_fact:
           gw_ipv4: "{{ hostvars['localhost']['gw_ipv4'] }}"
