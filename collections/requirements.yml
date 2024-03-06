@@ -5,12 +5,12 @@ collections:
 
 - name: community.network
   type: galaxy
-  version: 5.0.2
+  version: 3.0.0
 
 - name: community.routeros
   type: galaxy
-  version: 2.13.0
+  version: 2.0.0
   
 - name: openstack.cloud
   type: galaxy
-  version: 2.2.0
+  version: 2.1.0
