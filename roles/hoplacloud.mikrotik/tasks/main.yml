@@ -170,26 +170,6 @@
   set_fact:
     ipv4_gw_prefix: "{{ mikrotik_ipv4.split('.')[0:3] | join('.') }}"
 
-- name: Set route
-  community.routeros.command:
-    commands: /ip route add distance=1 dst-address=185.116.104.0/24 gateway=ether1
-  when: (ipv4_gw_prefix != "185.116.104")
-
-- name: Set route
-  community.routeros.command:
-    commands: /ip route add distance=1 dst-address=185.116.105.0/24 gateway=ether1
-  when: (ipv4_gw_prefix != "185.116.105")
-
-- name: Set route
-  community.routeros.command:
-    commands: /ip route add distance=1 dst-address=185.116.106.0/24 gateway=ether1
-  when: (ipv4_gw_prefix != "185.116.106")
-
-- name: Set route
-  community.routeros.command:
-    commands: /ip route add distance=1 dst-address=185.116.107.0/24 gateway=ether1
-  when: (ipv4_gw_prefix != "185.116.107")
-
 - name: Set NTP client
   community.routeros.command:
     commands: /system ntp client set enabled=yes primary-ntp=0.0.0.0 secondary-ntp=0.0.0.0 server-dns-names=0.fr.pool.ntp.org,1.fr.pool.ntp.org,2.fr.pool.ntp.org,3.fr.pool.ntp.org
