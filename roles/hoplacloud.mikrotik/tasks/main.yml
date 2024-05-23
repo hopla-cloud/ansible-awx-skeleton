@@ -110,7 +110,7 @@
 
 - name: Configure lan1 MTU
   community.routeros.command:
-    commands: /interface set ether2 mtu=1450
+    commands: /interface set ether2 mtu=1500
 
 - name: Configure lan1 interface
   community.routeros.command:
