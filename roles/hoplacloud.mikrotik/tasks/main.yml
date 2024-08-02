@@ -36,9 +36,9 @@
   community.routeros.command:
     commands: /system package enable security
 
-- name: Enable IPv6 package
+- name: disable IPv6 package
   community.routeros.command:
-    commands: /system package enable ipv6
+    commands: /system package disable ipv6
 
 - name: Disable services [1/6]
   community.routeros.command:
