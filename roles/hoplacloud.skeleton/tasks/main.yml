@@ -276,7 +276,8 @@
 - name: Create RouterOS instance Lan1 only
   os_server:
        name: "{{ username }}chr1"
-       image: 5bd8f544-5732-4089-bc5c-53b39d721956
+       #image: 5bd8f544-5732-4089-bc5c-53b39d721956
+       image: 1961fefc-1db1-4ae5-ab2d-ad84ec8db92a 
        timeout: 200
        flavor: b2.1
        nics:
